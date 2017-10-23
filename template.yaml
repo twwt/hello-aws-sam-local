@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SAM Local test
+Resources:
+  HelloWorld:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 60 #JVM系の言語はAWSLambdaを使うとき1度目の処理時間に時間がかかるのでTimeOutの設定値は少し長めに設定すべし
+      MemorySize: 512 #scalaだとOutOfMemoryで落ちることがあるのでよく検証して少し余裕を持って設定すべし
+      Handler: hello.Handler
+      CodeUri: ./target/scala-2.12/hello.jar
+      Runtime: java8
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /get
+            Method: get
+            Path: /post
+            Method: post
